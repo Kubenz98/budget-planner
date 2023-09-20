@@ -1,0 +1,13 @@
+{
+  "name": "budget-planner",
+  "version": "1.0.0",
+  "description": "A budget planning app",
+  "main": "index.ts",
+  "repository": "https://github.com/Kubenz98/budget-planner",
+  "author": "kubenz98",
+  "license": "MIT",
+  "private": true,
+  "engines": {
+    "node": ">=18"
+  }
+}
