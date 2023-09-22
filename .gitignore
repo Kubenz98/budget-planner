@@ -351,3 +351,5 @@ $RECYCLE.BIN/
 
 # Custom
 .idea/
+
+Client.http

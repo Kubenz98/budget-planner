@@ -1,7 +1,30 @@
 "use client";
 import { Button, Checkbox, Form, Input } from "antd";
+import { fetchJson } from "./lib/api";
+import { useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
+  const queryClient = useQueryClient();
+  const router = useRouter();
+
+  const onFinish = async (values) => {
+    const { email, password } = values;
+    try {
+      var data = await fetchJson(`/api/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+      queryClient.setQueryData(["user"], data.user);
+      router.push("/dashboard");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <Form
       name="basic"
@@ -15,13 +38,14 @@ export default function Page() {
         maxWidth: 600,
       }}
       initialValues={{
-        remember: true,
+        email: "budget@example.com",
+        password: "Demo123",
       }}
-      autoComplete="off"
+      onFinish={onFinish}
     >
       <Form.Item
         label="Email"
-        name="Email"
+        name="email"
         rules={[
           {
             required: true,
