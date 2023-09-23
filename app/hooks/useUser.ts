@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { fetchJson } from "../lib/api";
+import { fetchJson } from "@/app/lib/api";
 import { useState } from "react";
 
 interface User {

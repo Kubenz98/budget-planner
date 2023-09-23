@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { fetchJson } from "../../lib/api";
+import { fetchJson } from "@/app/lib/api";
 import { cookies } from "next/headers";
 
 const { CMS_URL } = process.env;

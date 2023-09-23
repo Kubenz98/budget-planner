@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { fetchJson } from "../../lib/api";
 import { serialize } from "cookie";
+import { fetchJson } from "@/app/lib/api";
 
 const { CMS_URL } = process.env;
 

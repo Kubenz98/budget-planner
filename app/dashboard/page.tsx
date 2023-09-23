@@ -1,6 +1,6 @@
 "use client";
 import { redirect } from "next/navigation"
-import useUser from "../hooks/useUser";
+import useUser from "@/app/hooks/useUser";
 
 export default function Dashboard() {
   const { user, userIsLoading } = useUser();

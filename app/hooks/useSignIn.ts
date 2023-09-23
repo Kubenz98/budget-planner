@@ -1,6 +1,5 @@
-
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { fetchJson } from "../lib/api";
+import { fetchJson } from "@/app/lib/api";
 
 interface SignInVariables {
   email: string;
