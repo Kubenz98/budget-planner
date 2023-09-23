@@ -9,7 +9,7 @@ interface FormValues {
   password: string;
 }
 
-const { Text } = Typography;
+const { Paragraph } = Typography;
 
 export default function Page() {
   const router = useRouter();
@@ -24,14 +24,9 @@ export default function Page() {
   return (
     <Form
       name="basic"
-      labelCol={{
-        span: 8,
-      }}
-      wrapperCol={{
-        span: 16,
-      }}
+      layout="vertical"
       style={{
-        maxWidth: 600,
+        maxWidth: 400,
       }}
       initialValues={{
         email: "budget@example.com",
@@ -64,21 +59,15 @@ export default function Page() {
       >
         <Input.Password />
       </Form.Item>
-      <Form.Item
-        wrapperCol={{
-          offset: 8,
-          span: 16,
-        }}
-      >
-        {isError && <Text type="danger">Wrong credentials!</Text>}
-      </Form.Item>
-      <Form.Item
-        wrapperCol={{
-          offset: 8,
-          span: 16,
-        }}
-      >
-        <Button type="primary" htmlType="submit" disabled={isLoading}>
+      {isError && (
+        <Form.Item>
+          <Paragraph type="danger" style={{ textAlign: "center" }}>
+            Wrong credentials!
+          </Paragraph>
+        </Form.Item>
+      )}
+      <Form.Item>
+        <Button type="primary" htmlType="submit" disabled={isLoading} block>
           {isLoading ? "Signing in..." : "Sign in"}
         </Button>
       </Form.Item>
