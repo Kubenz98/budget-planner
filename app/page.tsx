@@ -1,28 +1,24 @@
 "use client";
-import { Button, Checkbox, Form, Input } from "antd";
-import { fetchJson } from "./lib/api";
-import { useQueryClient } from "@tanstack/react-query";
+import { Button, Form, Input } from "antd";
 import { useRouter } from "next/navigation";
+import useSignIn from "./hooks/useSignIn";
+import { Typography } from "antd";
+
+interface FormValues {
+  email: string;
+  password: string;
+}
+
+const { Text } = Typography;
 
 export default function Page() {
-  const queryClient = useQueryClient();
   const router = useRouter();
+  const { signIn, isLoading, isError } = useSignIn();
 
-  const onFinish = async (values) => {
+  const onFinish = async (values: FormValues) => {
     const { email, password } = values;
-    try {
-      var data = await fetchJson(`/api/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
-      queryClient.setQueryData(["user"], data.user);
-      router.push("/dashboard");
-    } catch (err) {
-      console.log(err);
-    }
+    const valid = await signIn(email, password);
+    if (valid) router.push("/dashboard");
   };
 
   return (
@@ -68,26 +64,22 @@ export default function Page() {
       >
         <Input.Password />
       </Form.Item>
-
       <Form.Item
-        name="remember"
-        valuePropName="checked"
         wrapperCol={{
           offset: 8,
           span: 16,
         }}
       >
-        <Checkbox>Remember me</Checkbox>
+        {isError && <Text type="danger">Wrong credentials!</Text>}
       </Form.Item>
-
       <Form.Item
         wrapperCol={{
           offset: 8,
           span: 16,
         }}
       >
-        <Button type="primary" htmlType="submit">
-          Submit
+        <Button type="primary" htmlType="submit" disabled={isLoading}>
+          {isLoading ? "Signing in..." : "Sign in"}
         </Button>
       </Form.Item>
     </Form>

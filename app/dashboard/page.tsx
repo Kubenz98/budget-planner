@@ -1,35 +1,13 @@
 "use client";
-import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { fetchJson } from "../lib/api";
-import { useRouter } from "next/navigation";
+import { redirect } from "next/navigation"
+import useUser from "../hooks/useUser";
 
-export default function Page() {
-  const [isFetchEnabled, setisFetchEnabled] = useState<boolean>(true);
-  const router = useRouter();
+export default function Dashboard() {
+  const { user, userIsLoading } = useUser();
+  console.log(user);
 
-  const query = useQuery({
-    queryKey: ["user"],
-    queryFn: async () => {
-      try {
-        return await fetchJson("/api/user");
-      } catch (err) {
-        return null;
-      }
-    },
-    staleTime: Infinity,
-    cacheTime: 30_000, //ms
-    refetchInterval: 30_000,
-    enabled: isFetchEnabled,
-  });
-  if (!query.data && !query.isLoading && isFetchEnabled) {
-    setisFetchEnabled(false);
+  if (!user && !userIsLoading) {
+    redirect("/")
   }
-
-  console.log(query.data);
-
-  if (!query.data && !query.isLoading) router.push("/");
-  if (query.isLoading) return <h1>Loading...</h1>
-
-  return <h1>Welcome {query.data.user}</h1>;
+  if (user) return <h1>Welcome {user.name}</h1>;
 }

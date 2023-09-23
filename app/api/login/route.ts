@@ -21,7 +21,7 @@ export async function POST(request: Request) {
     });
     const response = {
       success: true,
-      user: user.username,
+      name: user.username,
     };
     return new Response(JSON.stringify(response), {
       status: 200,

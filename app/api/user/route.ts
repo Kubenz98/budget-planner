@@ -2,19 +2,22 @@ import { NextResponse } from "next/server";
 import { fetchJson } from "../../lib/api";
 import { cookies } from "next/headers";
 
-const { CMS_URL} = process.env;
+const { CMS_URL } = process.env;
 
 export async function GET() {
   const cookieStore = cookies();
-  const jwt = cookieStore.get("jwt").value;
+  const jwt = cookieStore.get("jwt");
+  if (!jwt) {
+    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+  }
   try {
     const user = await fetchJson(`${CMS_URL}/api/users/me`, {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${jwt.value}`,
       },
     });
     return NextResponse.json(
-      { user: user.username, id: user.id },
+      { name: user.username, id: user.id },
       { status: 200 }
     );
   } catch (err: any) {
