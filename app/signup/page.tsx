@@ -1,43 +1,24 @@
 "use client";
-import { Button, Form, Input } from "antd";
-import { useRouter } from "next/navigation";
-import useSignIn from "@/app/hooks/useSignIn";
-import { Typography } from "antd";
 import styled from "@emotion/styled";
-import Link from "next/link";
+import { Button, Form, Input, Typography } from "antd";
 
 interface FormValues {
   email: string;
   password: string;
+  passwordRepeat: string;
 }
 
-const { Paragraph, Title } = Typography;
-
-export default function Page() {
-  const router = useRouter();
-  const { signIn, isLoading, isError } = useSignIn();
+export default function Signup() {
+  const { Title } = Typography;
 
   const onFinish = async (values: FormValues) => {
-    const { email, password } = values;
-    const valid = await signIn(email, password);
-    if (valid) router.push("/dashboard");
+    const { email, password, passwordRepeat } = values;
+    console.log(email, password, passwordRepeat);
   };
 
   const FormStyled = styled(Form)`
     margin: 0 auto;
     max-width: 400px;
-  `;
-  const ItemStyled = styled(Form.Item)`
-    a {
-      text-decoration: underline;
-    }
-    text-align: center;
-  `;
-
-  const PStyled = styled(Paragraph)`
-    &.ant-typography-danger {
-      text-align: center;
-    }
   `;
 
   const TitleStyled = styled(Title)`
@@ -49,7 +30,7 @@ export default function Page() {
 
   return (
     <>
-      <TitleStyled>Budget Planner</TitleStyled>
+      <TitleStyled>Create an account</TitleStyled>
       <FormStyled
         name="basic"
         layout="vertical"
@@ -84,17 +65,21 @@ export default function Page() {
         >
           <Input.Password />
         </Form.Item>
-        {isError && (
-          <Form.Item>
-            <PStyled type="danger">Wrong credentials!</PStyled>
-          </Form.Item>
-        )}
-        <ItemStyled>
-          <Link href="/signup">Click here to create new account!</Link>
-        </ItemStyled>
+        <Form.Item
+          label="Password Repeat"
+          name="passwordRepeat"
+          rules={[
+            {
+              required: true,
+              message: "Please repeat your password!",
+            },
+          ]}
+        >
+          <Input.Password />
+        </Form.Item>
         <Form.Item>
-          <Button type="primary" htmlType="submit" disabled={isLoading} block>
-            {isLoading ? "Signing in..." : "Sign in"}
+          <Button type="primary" htmlType="submit" block>
+            Sign up
           </Button>
         </Form.Item>
       </FormStyled>

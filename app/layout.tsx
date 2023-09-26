@@ -8,7 +8,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <RQProvider>{children}</RQProvider>
+        <main>
+          <RQProvider>{children}</RQProvider>
+        </main>
       </body>
     </html>
   );
