@@ -1,19 +1,62 @@
 "use client";
 import styled from "@emotion/styled";
-import { Button, Form, Input, Typography } from "antd";
+import { Button, Form, FormInstance, Input, Typography } from "antd";
+import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import useSignUp from "./hooks/useSignUp";
 
 interface FormValues {
   email: string;
-  password: string;
+  newPassword: string;
   passwordRepeat: string;
+  username: string;
 }
 
-export default function Signup() {
+const { Paragraph } = Typography;
+
+const PStyled = styled(Paragraph)`
+  &.ant-typography-danger {
+    text-align: center;
+  }
+`;
+
+export default function SignupPage() {
+  const router = useRouter();
+  const { signUp, isLoading, hookError } = useSignUp();
   const { Title } = Typography;
+  const [form] = Form.useForm();
+
+  const SubmitButton = ({ form }: { form: FormInstance }) => {
+    const [submittable, setSubmittable] = useState(false);
+
+    const values = Form.useWatch([], form);
+
+    useEffect(() => {
+      form.validateFields({ validateOnly: true }).then(
+        () => {
+          setSubmittable(true);
+        },
+        () => {
+          setSubmittable(false);
+        }
+      );
+    }, [values]);
+    return (
+      <Button
+        type="primary"
+        htmlType="submit"
+        disabled={!submittable || isLoading}
+        block
+      >
+        {isLoading ? "Signing up..." : "Sign up"}
+      </Button>
+    );
+  };
 
   const onFinish = async (values: FormValues) => {
-    const { email, password, passwordRepeat } = values;
-    console.log(email, password, passwordRepeat);
+    const { email, newPassword, username } = values;
+    const validSignUp = await signUp(username, email, newPassword);
+    if (validSignUp) router.push("/dashboard");
   };
 
   const FormStyled = styled(Form)`
@@ -34,10 +77,7 @@ export default function Signup() {
       <FormStyled
         name="basic"
         layout="vertical"
-        initialValues={{
-          email: "budget@example.com",
-          password: "Demo123",
-        }}
+        form={form}
         onFinish={onFinish}
       >
         <Form.Item
@@ -45,8 +85,21 @@ export default function Signup() {
           name="email"
           rules={[
             {
+              type: "email",
               required: true,
-              message: "Please enter your email!",
+              message: "Please enter a valid email!",
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          label="Name"
+          name="username"
+          rules={[
+            {
+              required: true,
+              message: "Please enter your name!",
             },
           ]}
         >
@@ -55,15 +108,25 @@ export default function Signup() {
 
         <Form.Item
           label="Password"
-          name="password"
+          name="newPassword"
           rules={[
             {
               required: true,
               message: "Please enter your password!",
             },
+            () => ({
+              validator(_, value) {
+                if (value && value.length > 5) {
+                  return Promise.resolve();
+                }
+                return Promise.reject(
+                  new Error("The password must have at least 6 characters!")
+                );
+              },
+            }),
           ]}
         >
-          <Input.Password />
+          <Input.Password autoComplete="pwd" />
         </Form.Item>
         <Form.Item
           label="Password Repeat"
@@ -73,14 +136,27 @@ export default function Signup() {
               required: true,
               message: "Please repeat your password!",
             },
+            ({ getFieldValue }) => ({
+              validator(_, value) {
+                if (!value || getFieldValue("newPassword") === value) {
+                  return Promise.resolve();
+                }
+                return Promise.reject(
+                  new Error("The new password that you entered do not match!")
+                );
+              },
+            }),
           ]}
         >
           <Input.Password />
         </Form.Item>
+        {hookError && (
+          <Form.Item>
+            <PStyled type="danger">Something went wrong!</PStyled>
+          </Form.Item>
+        )}
         <Form.Item>
-          <Button type="primary" htmlType="submit" block>
-            Sign up
-          </Button>
+          <SubmitButton form={form} />
         </Form.Item>
       </FormStyled>
     </>

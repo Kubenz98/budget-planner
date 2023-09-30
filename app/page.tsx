@@ -1,10 +1,11 @@
 "use client";
-import { Button, Form, Input } from "antd";
+import { Button, Form, FormInstance, Input } from "antd";
 import { useRouter } from "next/navigation";
 import useSignIn from "@/app/hooks/useSignIn";
 import { Typography } from "antd";
 import styled from "@emotion/styled";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 interface FormValues {
   email: string;
@@ -16,6 +17,34 @@ const { Paragraph, Title } = Typography;
 export default function Page() {
   const router = useRouter();
   const { signIn, isLoading, isError } = useSignIn();
+  const [form] = Form.useForm();
+
+  const SubmitButton = ({ form }: { form: FormInstance }) => {
+    const [submittable, setSubmittable] = useState(false);
+
+    const values = Form.useWatch([], form);
+
+    useEffect(() => {
+      form.validateFields({ validateOnly: true }).then(
+        () => {
+          setSubmittable(true);
+        },
+        () => {
+          setSubmittable(false);
+        }
+      );
+    }, [values]);
+    return (
+      <Button
+        type="primary"
+        htmlType="submit"
+        disabled={!submittable || isLoading}
+        block
+      >
+        {isLoading ? "Signing in..." : "Sign in"}
+      </Button>
+    );
+  };
 
   const onFinish = async (values: FormValues) => {
     const { email, password } = values;
@@ -57,6 +86,7 @@ export default function Page() {
           email: "budget@example.com",
           password: "Demo123",
         }}
+        form={form}
         onFinish={onFinish}
       >
         <Form.Item
@@ -65,7 +95,8 @@ export default function Page() {
           rules={[
             {
               required: true,
-              message: "Please enter your email!",
+              type: "email",
+              message: "Please enter a valid email!",
             },
           ]}
         >
@@ -93,9 +124,7 @@ export default function Page() {
           <Link href="/signup">Click here to create new account!</Link>
         </ItemStyled>
         <Form.Item>
-          <Button type="primary" htmlType="submit" disabled={isLoading} block>
-            {isLoading ? "Signing in..." : "Sign in"}
-          </Button>
+          <SubmitButton form={form} />
         </Form.Item>
       </FormStyled>
     </>
