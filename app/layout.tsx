@@ -1,4 +1,5 @@
 import { RQProvider } from "./providers/QueryClinetProvider";
+import { EmotionProvider } from "./providers/ThemeProvider";
 
 export default function RootLayout({
   children,
@@ -9,7 +10,9 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <main>
-          <RQProvider>{children}</RQProvider>
+          <RQProvider>
+            <EmotionProvider>{children}</EmotionProvider>
+          </RQProvider>
         </main>
       </body>
     </html>
