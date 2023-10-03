@@ -14,6 +14,30 @@ interface FormValues {
 
 const { Paragraph, Title } = Typography;
 
+const FormStyled = styled(Form)`
+  margin: 0 auto;
+  max-width: 400px;
+`;
+const ItemStyled = styled(Form.Item)`
+  a {
+    text-decoration: underline;
+  }
+  text-align: center;
+`;
+
+const PStyled = styled(Paragraph)`
+  &.ant-typography-danger {
+    text-align: center;
+  }
+`;
+
+const TitleStyled = styled(Title)`
+  &.ant-typography {
+    margin: 5rem 0;
+    text-align: center;
+  }
+`;
+
 export default function Page() {
   const router = useRouter();
   const { signIn, isLoading, isError } = useSignIn();
@@ -51,30 +75,6 @@ export default function Page() {
     const valid = await signIn(email, password);
     if (valid) router.push("/dashboard");
   };
-
-  const FormStyled = styled(Form)`
-    margin: 0 auto;
-    max-width: 400px;
-  `;
-  const ItemStyled = styled(Form.Item)`
-    a {
-      text-decoration: underline;
-    }
-    text-align: center;
-  `;
-
-  const PStyled = styled(Paragraph)`
-    &.ant-typography-danger {
-      text-align: center;
-    }
-  `;
-
-  const TitleStyled = styled(Title)`
-    &.ant-typography {
-      margin: 5rem 0;
-      text-align: center;
-    }
-  `;
 
   return (
     <>
