@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 import { Tabs } from "antd";
 import React from "react";
 import { items } from "./items";
+import { usePathname } from "next/navigation";
 
 const NavStyled = styled.nav`
   padding: 0 16px;
@@ -24,9 +25,10 @@ const TabsStyled = styled(Tabs)`
 `;
 
 export default function Navbar() {
+  const pathname = usePathname();
   return (
     <NavStyled>
-      <TabsStyled items={items} />
+      <TabsStyled defaultActiveKey={pathname} items={items} />
     </NavStyled>
   );
 }
