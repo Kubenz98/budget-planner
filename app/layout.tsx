@@ -1,5 +1,13 @@
+"use client"
+import styled from "@emotion/styled";
 import { RQProvider } from "./providers/QueryClinetProvider";
 import { EmotionProvider } from "./providers/ThemeProvider";
+
+const StyledBody = styled.body`
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+`;
 
 export default function RootLayout({
   children,
@@ -8,13 +16,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
-        <main>
+      <StyledBody>
           <RQProvider>
             <EmotionProvider>{children}</EmotionProvider>
           </RQProvider>
-        </main>
-      </body>
+      </StyledBody>
     </html>
   );
 }

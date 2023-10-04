@@ -1,4 +1,10 @@
+"use client";
+import styled from "@emotion/styled";
 import Navbar from "../common/Navbar/Navbar";
+
+const MainStyled = styled.main`
+  padding: 0.5rem;
+`;
 
 export default function DashboardLayout({
   children,
@@ -8,7 +14,7 @@ export default function DashboardLayout({
   return (
     <>
       <Navbar />
-      <main>{children}</main>
+      <MainStyled>{children}</MainStyled>
     </>
   );
 }
