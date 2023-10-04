@@ -1,8 +1,10 @@
 "use client";
 import { redirect } from "next/navigation";
 import useUser from "@/app/hooks/useUser";
-import { Typography } from "antd";
+import type { DatePickerProps } from "antd";
+import { Typography, DatePicker } from "antd";
 import styled from "@emotion/styled";
+import dayjs from "dayjs";
 
 const { Text, Title } = Typography;
 
@@ -25,8 +27,18 @@ const DivStyled = styled.div`
   border-bottom-color: ${(props) => props.theme["gray-5"]};
 `;
 
+const DatePickerStyled = styled(DatePicker)`
+  margin-top: 1rem;
+`;
+
+const monthFormat = "MMMM YYYY";
+
 export default function BudgetPage() {
   const { user, userIsLoading } = useUser();
+
+  const monthChange: DatePickerProps["onChange"] = (date, dateString) => {
+    console.log(date, dateString);
+  };
 
   if (!user && !userIsLoading) {
     redirect("/");
@@ -38,6 +50,12 @@ export default function BudgetPage() {
         <TitleStyled>Budget</TitleStyled>
         <TextStyled>1520 to be assigned</TextStyled>
       </DivStyled>
+      <DatePickerStyled
+        defaultValue={dayjs()}
+        onChange={monthChange}
+        picker="month"
+        format={monthFormat}
+      />
     </>
   );
 }
