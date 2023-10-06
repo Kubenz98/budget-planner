@@ -1,74 +1,20 @@
 "use client";
-import { Button, Form, FormInstance, Input } from "antd";
+import { Form, Input } from "antd";
 import { useRouter } from "next/navigation";
 import useSignIn from "@/app/hooks/useSignIn";
-import { Typography } from "antd";
-import styled from "@emotion/styled";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { TitleStyled, FormStyled, PStyled, ItemStyled } from "./styled";
+import SubmitButton from "./hooks/SubmitButton";
 
 interface FormValues {
   email: string;
   password: string;
 }
 
-const { Paragraph, Title } = Typography;
-
-const FormStyled = styled(Form)`
-  margin: 0 auto;
-  max-width: 400px;
-`;
-const ItemStyled = styled(Form.Item)`
-  a {
-    text-decoration: underline;
-  }
-  text-align: center;
-`;
-
-const PStyled = styled(Paragraph)`
-  &.ant-typography-danger {
-    text-align: center;
-  }
-`;
-
-const TitleStyled = styled(Title)`
-  &.ant-typography {
-    margin: 5rem 0;
-    text-align: center;
-  }
-`;
-
 export default function Page() {
   const router = useRouter();
   const { signIn, isLoading, isError } = useSignIn();
   const [form] = Form.useForm();
-
-  const SubmitButton = ({ form }: { form: FormInstance }) => {
-    const [submittable, setSubmittable] = useState(false);
-
-    const values = Form.useWatch([], form);
-
-    useEffect(() => {
-      form.validateFields({ validateOnly: true }).then(
-        () => {
-          setSubmittable(true);
-        },
-        () => {
-          setSubmittable(false);
-        }
-      );
-    }, [values]);
-    return (
-      <Button
-        type="primary"
-        htmlType="submit"
-        disabled={!submittable || isLoading}
-        block
-      >
-        {isLoading ? "Signing in..." : "Sign in"}
-      </Button>
-    );
-  };
 
   const onFinish = async (values: FormValues) => {
     const { email, password } = values;
@@ -124,7 +70,7 @@ export default function Page() {
           <Link href="/signup">Click here to create new account!</Link>
         </ItemStyled>
         <Form.Item>
-          <SubmitButton form={form} />
+          <SubmitButton form={form} isLoading={isLoading} />
         </Form.Item>
       </FormStyled>
     </>
