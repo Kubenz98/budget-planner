@@ -19,9 +19,9 @@ const SubmitButton = ({
       },
       () => {
         setSubmittable(false);
-      }
+      },
     );
-  }, [values]);
+  }, [values, form]);
   return (
     <Button
       type="primary"

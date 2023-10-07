@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import styled from "@emotion/styled";
 import { RQProvider } from "./providers/QueryClinetProvider";
 import { EmotionProvider } from "./providers/ThemeProvider";
@@ -17,9 +17,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <StyledBody>
-          <RQProvider>
-            <EmotionProvider>{children}</EmotionProvider>
-          </RQProvider>
+        <RQProvider>
+          <EmotionProvider>{children}</EmotionProvider>
+        </RQProvider>
       </StyledBody>
     </html>
   );

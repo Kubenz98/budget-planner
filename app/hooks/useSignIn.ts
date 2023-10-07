@@ -22,7 +22,7 @@ const useSignIn = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ email, password }),
-      })
+      }),
   );
 
   const signIn = async (email: string, password: string) => {
@@ -34,7 +34,7 @@ const useSignIn = () => {
       return false;
     }
   };
-  
+
   return { signIn, isLoading: mutation.isLoading, isError: mutation.isError };
 };
 

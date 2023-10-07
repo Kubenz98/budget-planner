@@ -18,12 +18,12 @@ export async function GET() {
     });
     return NextResponse.json(
       { name: user.username, id: user.id },
-      { status: 200 }
+      { status: 200 },
     );
   } catch (err: any) {
     return NextResponse.json(
       { message: "Internal Server Error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

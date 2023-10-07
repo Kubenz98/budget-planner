@@ -23,7 +23,7 @@ const useSignUp = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ username, email, password }),
-      })
+      }),
   );
 
   const signUp = async (username: string, email: string, password: string) => {

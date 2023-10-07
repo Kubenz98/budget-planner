@@ -71,7 +71,7 @@ export default function SignupPage() {
                   return Promise.resolve();
                 }
                 return Promise.reject(
-                  new Error("The password must have at least 6 characters!")
+                  new Error("The password must have at least 6 characters!"),
                 );
               },
             }),
@@ -93,7 +93,7 @@ export default function SignupPage() {
                   return Promise.resolve();
                 }
                 return Promise.reject(
-                  new Error("The new password that you entered do not match!")
+                  new Error("The new password that you entered do not match!"),
                 );
               },
             }),
