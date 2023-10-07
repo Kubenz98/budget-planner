@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { Typography } from "antd";
+import { Button, Typography } from "antd";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 
 const { Text, Title } = Typography;
@@ -39,4 +39,8 @@ export const RightOutlinedStyled = styled(RightOutlined)`
   padding: 0.5rem;
   border: 1px solid;
   border-color: ${(props) => props.theme["gray-6"]};
+`;
+export const ButtonStyled = styled(Button)`
+  width: 100%;
+  margin-top: 2rem;
 `;

@@ -5,7 +5,7 @@ import type { DatePickerProps } from "antd";
 import { DatePicker } from "antd";
 import dayjs from "dayjs";
 import { useState } from "react";
-import { TitleStyled } from "./styled";
+import { ButtonStyled, TitleStyled } from "./styled";
 import {
   DivStyled,
   TextStyled,
@@ -13,12 +13,18 @@ import {
   LeftOutlinedStyled,
   RightOutlinedStyled,
 } from "./styled";
+import CategoryModal from "./CategoryModal";
 
 const monthFormat = "MMMM YYYY";
 
 export default function BudgetPage() {
   const { user, userIsLoading } = useUser();
   const [month, setMonth] = useState(dayjs());
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
 
   const monthChange: DatePickerProps["onChange"] = (date) => {
     setMonth(date);
@@ -52,6 +58,10 @@ export default function BudgetPage() {
           <RightOutlinedStyled onClick={() => monthHandle("increase")} />
         </div>
       </DateContainer>
+      <ButtonStyled type="dashed" onClick={showModal}>
+        + New Category
+      </ButtonStyled>
+      <CategoryModal modalState={isModalOpen} setModalState={setIsModalOpen} />
     </>
   );
 }
