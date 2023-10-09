@@ -13,7 +13,7 @@ import {
   LeftOutlinedStyled,
   RightOutlinedStyled,
 } from "./styled";
-import CategoryModal from "./CategoryModal";
+import CategoryModal from "./CategoryModal/CategoryModal";
 
 const monthFormat = "MMMM YYYY";
 
