@@ -4,7 +4,7 @@ import { RQProvider } from "./providers/QueryClinetProvider";
 import { EmotionProvider } from "./providers/ThemeProvider";
 
 const StyledBody = styled.body`
-  margin: 0;
+  *margin: 0;
   padding: 0;
   box-sizing: border-box;
 `;

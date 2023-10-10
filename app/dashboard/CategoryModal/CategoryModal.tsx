@@ -1,11 +1,9 @@
 import { Button, Form, Input, Modal, Select } from "antd";
-import { Dispatch, SetStateAction, useState } from "react";
+import { useState } from "react";
 import { colors } from "./options";
-
-type CategoryModalProps = {
-  modalState: boolean;
-  setModalState: Dispatch<SetStateAction<boolean>>;
-};
+import ColorPicker from "./ColorPicker/ColorPicker";
+import { ColorItemStyled, NameItemStyled } from "./styled";
+import { CategoryModalProps } from "./types";
 
 export default function CategoryModal({
   modalState,
@@ -13,6 +11,7 @@ export default function CategoryModal({
 }: CategoryModalProps) {
   const [form] = Form.useForm();
   const [submittable, setSubmittable] = useState(true);
+  const [activeColor, setActiveColor] = useState<null | number>(null);
 
   const handleAdd = () => {
     setSubmittable(false);
@@ -23,6 +22,7 @@ export default function CategoryModal({
   const handleClose = () => {
     setModalState(false);
     setSubmittable(true);
+    setActiveColor(null);
     form.setFieldValue("category", "");
     form.setFieldValue("color", "");
   };
@@ -46,7 +46,7 @@ export default function CategoryModal({
       ]}
     >
       <Form name="CategoryForm" layout="vertical" form={form}>
-        <Form.Item
+        <NameItemStyled
           label="Name"
           name="category"
           rules={[
@@ -56,10 +56,10 @@ export default function CategoryModal({
             },
           ]}
         >
-          <Input />
-        </Form.Item>
+          <Input placeholder="Enter a category name" />
+        </NameItemStyled>
 
-        <Form.Item
+        <ColorItemStyled
           label="Color"
           name="color"
           rules={[
@@ -68,8 +68,13 @@ export default function CategoryModal({
             },
           ]}
         >
-          <Select placeholder="Select a color" options={colors} />
-        </Form.Item>
+          <Select options={colors} />
+        </ColorItemStyled>
+        <ColorPicker
+          form={form}
+          activeColor={activeColor}
+          setActiveColor={setActiveColor}
+        />
       </Form>
     </Modal>
   );

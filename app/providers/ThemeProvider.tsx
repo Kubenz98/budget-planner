@@ -19,5 +19,7 @@ export function EmotionProvider({ children }) {
   token["gray-11"] = "#1f1f1f";
   token["gray-12"] = "#141414";
   token["gray-13"] = "#000000";
+  token["primary-3"] = "#91D5FF";
+  token["neutral-3"] = "#f5f5f5";
   return <ThemeProvider theme={token}>{children}</ThemeProvider>;
 }
