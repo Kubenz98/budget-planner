@@ -20,20 +20,17 @@ export default function CategoryModal({
   };
 
   const handleClose = () => {
-    if (submittable) {
-      setModalState(false);
-      setSubmittable(true);
-      setActiveColor(null);
-      form.setFieldValue("category", "");
-      form.setFieldValue("color", "");
-    }
+    setModalState(false);
+    setSubmittable(true);
+    setActiveColor(null);
+    form.setFieldValue("category", "");
+    form.setFieldValue("color", "");
   };
-
   const values = Form.useWatch([], form);
   useEffect(() => {
     form.validateFields({ validateOnly: true }).then(
       (val) => {
-        setSubmittable(true);
+        if (val.category && val.color) setSubmittable(true);
       },
       () => {
         setSubmittable(false);
