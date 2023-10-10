@@ -1,5 +1,5 @@
 import { Button, Form, Input, Modal, Select } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { colors } from "./options";
 import ColorPicker from "./ColorPicker/ColorPicker";
 import { ColorItemStyled, NameItemStyled } from "./styled";
@@ -10,7 +10,7 @@ export default function CategoryModal({
   setModalState,
 }: CategoryModalProps) {
   const [form] = Form.useForm();
-  const [submittable, setSubmittable] = useState(true);
+  const [submittable, setSubmittable] = useState(false);
   const [activeColor, setActiveColor] = useState<null | number>(null);
 
   const handleAdd = () => {
@@ -20,17 +20,32 @@ export default function CategoryModal({
   };
 
   const handleClose = () => {
-    setModalState(false);
-    setSubmittable(true);
-    setActiveColor(null);
-    form.setFieldValue("category", "");
-    form.setFieldValue("color", "");
+    if (submittable) {
+      setModalState(false);
+      setSubmittable(true);
+      setActiveColor(null);
+      form.setFieldValue("category", "");
+      form.setFieldValue("color", "");
+    }
   };
+
+  const values = Form.useWatch([], form);
+  useEffect(() => {
+    form.validateFields({ validateOnly: true }).then(
+      (val) => {
+        setSubmittable(true);
+      },
+      () => {
+        setSubmittable(false);
+      },
+    );
+  }, [form, values]);
 
   return (
     <Modal
       title="Add a new category"
       open={modalState}
+      onCancel={handleClose}
       footer={[
         <Button key="1" onClick={handleClose}>
           Close
