@@ -33,12 +33,14 @@ export const LeftOutlinedStyled = styled(LeftOutlined)`
   padding: 0.5rem;
   border: 1px solid;
   border-color: ${(props) => props.theme["gray-6"]};
+  border-radius: 0.3rem;
 `;
 export const RightOutlinedStyled = styled(RightOutlined)`
   margin-left: 0.5rem;
   padding: 0.5rem;
   border: 1px solid;
   border-color: ${(props) => props.theme["gray-6"]};
+  border-radius: 0.3rem;
 `;
 export const ButtonStyled = styled(Button)`
   width: 100%;
