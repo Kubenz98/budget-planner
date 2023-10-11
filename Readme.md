@@ -1,3 +1,3 @@
 # budget-planner
 
-A simple budgeting app.
+A simple budgeting app. Project under construction
