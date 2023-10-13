@@ -15,7 +15,7 @@ export const ListItemStyled = styled.li<ListItemProps>`
   width: 3.5rem;
   height: 3.5rem;
   border-radius: 50%;
-  background-color: ${(props) => props.theme[props.color]};
+  background-color: ${(props) => props.theme[props.color + "3"]};
   border: ${(props) => {
     if (props.isActive()) {
       return `2px solid ${props.theme["gray-8"]}`;

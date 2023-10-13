@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { Button, Typography, Table } from "antd";
+import { Button, Typography, Table, Tag } from "antd";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 
 const { Text, Title } = Typography;
@@ -51,4 +51,9 @@ export const TableStyled = styled(Table)`
   .ant-table-thead th.ant-table-cell {
     background-color: ${(props) => props.theme["geekblue-1"]};
   }
+`;
+
+export const TagStyled = styled(Tag)`
+  padding: 0.1rem 0.5rem;
+  font-weight: 600;
 `;

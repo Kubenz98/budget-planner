@@ -1,6 +1,5 @@
-import styled from "@emotion/styled";
-import { Tag } from "antd";
 import { ColumnsType } from "antd/es/table";
+import { TagStyled } from "./styled";
 
 interface DataType {
   key: string;
@@ -9,10 +8,6 @@ interface DataType {
   tag: string;
   color: string;
 }
-
-const TagStyled = styled(Tag)`
-  font-weight: 600;
-`;
 
 export const columns: ColumnsType<DataType> = [
   {
@@ -41,7 +36,7 @@ export const data: DataType[] = [
     assigned: 500,
     left: 100,
     tag: "Category",
-    color: "volcano",
+    color: "lime",
   },
   {
     key: "2",
@@ -55,6 +50,6 @@ export const data: DataType[] = [
     assigned: 800,
     left: 200,
     tag: "Food",
-    color: "purple",
+    color: "green",
   },
 ];
