@@ -1,5 +1,5 @@
 interface DataType {
-  key: string;
+  id: number;
   assigned: number;
   left: number;
   tag: string;
@@ -8,21 +8,21 @@ interface DataType {
 
 export const data: DataType[] = [
   {
-    key: "1",
+    id: 1,
     assigned: 500,
     left: 100,
     tag: "Car",
     color: "cyan",
   },
   {
-    key: "2",
-    assigned: 600,
+    id: 2,
+    assigned: 500,
     left: 0,
     tag: "Home",
     color: "magenta",
   },
   {
-    key: "3",
+    id: 3,
     assigned: 800,
     left: 200,
     tag: "Food",

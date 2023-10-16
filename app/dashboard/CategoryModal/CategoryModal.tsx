@@ -4,6 +4,7 @@ import { colors } from "./options";
 import ColorPicker from "./ColorPicker/ColorPicker";
 import { ColorItemStyled, NameItemStyled } from "./styled";
 import { CategoryModalProps } from "./types";
+import useCategory from "./hooks/useCategory";
 
 export default function CategoryModal({
   modalState,
@@ -12,12 +13,9 @@ export default function CategoryModal({
   const [form] = Form.useForm();
   const [submittable, setSubmittable] = useState(false);
   const [activeColor, setActiveColor] = useState<null | number>(null);
+  const { addCategory, isLoading, hookError } = useCategory();
 
-  const handleAdd = () => {
-    setSubmittable(false);
-    const { category, color } = form.getFieldsValue();
-    console.log(category, color);
-  };
+  const values = Form.useWatch([], form);
 
   const handleClose = () => {
     setModalState(false);
@@ -26,7 +24,15 @@ export default function CategoryModal({
     form.setFieldValue("category", "");
     form.setFieldValue("color", "");
   };
-  const values = Form.useWatch([], form);
+  const handleAdd = async () => {
+    setSubmittable(false);
+    const { category, color } = form.getFieldsValue();
+    const response = await addCategory(category, color);
+    if (response) {
+      handleClose();
+    }
+  };
+
   useEffect(() => {
     form.validateFields({ validateOnly: true }).then(
       (val) => {

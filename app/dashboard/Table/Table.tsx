@@ -13,8 +13,7 @@ interface DataType {
 const columns: ColumnsType<DataType> = [
   {
     title: "Tags",
-    key: "tags",
-    dataIndex: "tags",
+    dataIndex: "tag",
     render: (_, { tag, color }) => {
       return <TagStyled color={color}>{tag}</TagStyled>;
     },
@@ -22,18 +21,16 @@ const columns: ColumnsType<DataType> = [
   {
     title: "Assigned",
     dataIndex: "assigned",
-    key: "assigned",
-    render: (text, record, index) => (
-      <InputStyled defaultValue={text} type="number" />
+    render: (value, record, index) => (
+      <InputStyled defaultValue={value} type="number" />
     ),
   },
   {
     title: "Left",
     dataIndex: "left",
-    key: "left",
   },
 ];
 
 export default function BudgetTable() {
-  return <TableStyled columns={columns} dataSource={data} />;
+  return <TableStyled columns={columns} dataSource={data} rowKey={"id"} />;
 }
