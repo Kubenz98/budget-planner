@@ -12,10 +12,9 @@ import {
   DateContainer,
   LeftOutlinedStyled,
   RightOutlinedStyled,
-  TableStyled,
 } from "./styled";
 import CategoryModal from "./CategoryModal/CategoryModal";
-import { columns, data } from "./DUMMY_DATA";
+import BudgetTable from "./Table/Table";
 
 const monthFormat = "MMMM YYYY";
 
@@ -60,7 +59,7 @@ export default function BudgetPage() {
           <RightOutlinedStyled onClick={() => monthHandle("increase")} />
         </div>
       </DateContainer>
-      <TableStyled columns={columns} dataSource={data} />
+      <BudgetTable />
       <ButtonStyled type="dashed" onClick={showModal}>
         + New Category
       </ButtonStyled>

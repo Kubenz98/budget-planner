@@ -1,6 +1,3 @@
-import { ColumnsType } from "antd/es/table";
-import { TagStyled } from "./styled";
-
 interface DataType {
   key: string;
   assigned: number;
@@ -9,34 +6,13 @@ interface DataType {
   color: string;
 }
 
-export const columns: ColumnsType<DataType> = [
-  {
-    title: "Tags",
-    key: "tags",
-    dataIndex: "tags",
-    render: (_, { tag, color }) => {
-      return <TagStyled color={color}>{tag}</TagStyled>;
-    },
-  },
-  {
-    title: "Assigned",
-    dataIndex: "assigned",
-    key: "assigned",
-  },
-  {
-    title: "Left",
-    dataIndex: "left",
-    key: "left",
-  },
-];
-
 export const data: DataType[] = [
   {
     key: "1",
     assigned: 500,
     left: 100,
-    tag: "Category",
-    color: "lime",
+    tag: "Car",
+    color: "cyan",
   },
   {
     key: "2",
