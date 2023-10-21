@@ -2,12 +2,13 @@ export class ApiError extends Error {
   constructor(
     url: string,
     public status: number,
+    public responseText: string,
   ) {
-    super(`'${url}' returned ${status}`);
+    super(`'${url}' returned ${status}:`);
     if (Error.captureStackTrace) {
       Error.captureStackTrace(this, ApiError);
     }
-    this.status = status;
+    this.responseText = responseText;
     this.name = "ApiError";
   }
 }
@@ -15,7 +16,8 @@ export class ApiError extends Error {
 export const fetchJson = async (url: string, options?: RequestInit) => {
   const response = await fetch(url, options);
   if (!response.ok) {
-    throw new ApiError(url, response.status);
+    const responseText = await response.text();
+    throw new ApiError(url, response.status, responseText);
   }
   return await response.json();
 };

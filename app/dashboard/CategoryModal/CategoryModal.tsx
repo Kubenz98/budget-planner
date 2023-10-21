@@ -2,7 +2,7 @@ import { Button, Form, Input, Modal, Select } from "antd";
 import { useEffect, useState } from "react";
 import { colors } from "./options";
 import ColorPicker from "./ColorPicker/ColorPicker";
-import { ColorItemStyled, NameItemStyled } from "./styled";
+import { ColorItemStyled, ErrorMsgStyled, NameItemStyled } from "./styled";
 import { CategoryModalProps } from "./types";
 import useCategory from "./hooks/useCategory";
 
@@ -13,7 +13,8 @@ export default function CategoryModal({
   const [form] = Form.useForm();
   const [submittable, setSubmittable] = useState(false);
   const [activeColor, setActiveColor] = useState<null | number>(null);
-  const { addCategory, isLoading, hookError } = useCategory();
+  const [error, setError] = useState<string>("");
+  const { addCategory, isLoading } = useCategory();
 
   const values = Form.useWatch([], form);
 
@@ -24,12 +25,21 @@ export default function CategoryModal({
     form.setFieldValue("category", "");
     form.setFieldValue("color", "");
   };
+
   const handleAdd = async () => {
     setSubmittable(false);
     const { category, color } = form.getFieldsValue();
     const response = await addCategory(category, color);
-    if (response) {
+    if (response.success) {
       handleClose();
+      error && setError("");
+    } else if (!response.success && response.message === "Category exists") {
+      setError(response.message);
+    } else if (
+      !response.success &&
+      response.message === "Internal Server Error"
+    ) {
+      setError(response.message);
     }
   };
 
@@ -93,6 +103,7 @@ export default function CategoryModal({
           activeColor={activeColor}
           setActiveColor={setActiveColor}
         />
+        {error && <ErrorMsgStyled>{error}</ErrorMsgStyled>}
       </Form>
     </Modal>
   );

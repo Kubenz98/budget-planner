@@ -6,8 +6,13 @@ interface CategoryVariables {
   color: string;
 }
 
+interface CategoryResponse {
+  message: string;
+  success: boolean;
+}
+
 const useCategory = () => {
-  const mutation = useMutation<CategoryVariables, Error, CategoryVariables>(
+  const mutation = useMutation<CategoryResponse, Error, CategoryVariables>(
     ({ category, color }) =>
       fetchJson("/api/category", {
         method: "POST",
@@ -21,16 +26,16 @@ const useCategory = () => {
   const addCategory = async (category: string, color: string) => {
     try {
       const response = await mutation.mutateAsync({ category, color });
-      return true;
+      return response;
     } catch (err) {
-      return false;
+      return JSON.parse(err.responseText);
     }
   };
 
   return {
     addCategory,
+    error: mutation.error,
     isLoading: mutation.isLoading,
-    hookError: mutation.isError,
   };
 };
 

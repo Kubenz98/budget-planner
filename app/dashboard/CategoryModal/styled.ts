@@ -13,3 +13,8 @@ export const ColorItemStyled = styled(Form.Item)`
     display: none;
   }
 `;
+
+export const ErrorMsgStyled = styled.p`
+  text-align: center;
+  color: ${(props) => props.theme["red-5"]};
+`;

@@ -20,14 +20,20 @@ export async function POST(request: Request) {
       },
       body: JSON.stringify({ category, color }),
     });
+    if (request.data.attributes.error === "ValidationError") {
+      return NextResponse.json(
+        { message: `Category exists`, success: false },
+        { status: 409 },
+      );
+    }
     return NextResponse.json(
-      { message: `${request.data.attributes.name} category added!` },
+      { message: "Category added", success: true },
       { status: 200 },
     );
-  } catch (err: any) {
-    console.log(err);
+  } catch (error: any) {
+    console.log(error);
     return NextResponse.json(
-      { message: "Internal Server Error" },
+      { message: "Internal Server Error", success: false },
       { status: 500 },
     );
   }
