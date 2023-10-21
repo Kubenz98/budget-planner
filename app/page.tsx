@@ -1,10 +1,11 @@
 "use client";
 import { Form, Input } from "antd";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import useSignIn from "@/app/hooks/useSignIn";
 import Link from "next/link";
 import { TitleStyled, FormStyled, PStyled, ItemStyled } from "./styled";
 import SubmitButton from "./hooks/SubmitButton";
+import useUser from "./hooks/useUser";
 
 interface FormValues {
   email: string;
@@ -12,9 +13,14 @@ interface FormValues {
 }
 
 export default function Page() {
-  const router = useRouter();
+  const { user, userIsLoading } = useUser();
   const { signIn, isLoading, isError } = useSignIn();
   const [form] = Form.useForm();
+  const router = useRouter();
+
+  if (user && !userIsLoading) {
+    redirect("/dashboard");
+  }
 
   const onFinish = async (values: FormValues) => {
     const { email, password } = values;
