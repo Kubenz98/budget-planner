@@ -1,17 +1,10 @@
 import { fetchJson } from "@/app/lib/api";
 import { useMutation } from "@tanstack/react-query";
+import { Form } from "antd";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { CategoryResponse, CategoryVariables } from "../types";
 
-interface CategoryVariables {
-  category: string;
-  color: string;
-}
-
-interface CategoryResponse {
-  message: string;
-  success: boolean;
-}
-
-const useCategory = () => {
+const useCategory = (setModalState: Dispatch<SetStateAction<boolean>>) => {
   const mutation = useMutation<CategoryResponse, Error, CategoryVariables>(
     ({ category, color }) =>
       fetchJson("/api/category", {
@@ -23,6 +16,23 @@ const useCategory = () => {
       }),
   );
 
+  const [form] = Form.useForm();
+  const values = Form.useWatch([], form);
+  const [submittable, setSubmittable] = useState(false);
+  const [activeColor, setActiveColor] = useState<null | number>(null);
+  const [error, setError] = useState<string>("");
+
+  useEffect(() => {
+    form.validateFields({ validateOnly: true }).then(
+      (val) => {
+        if (val.category && val.color) setSubmittable(true);
+      },
+      () => {
+        setSubmittable(false);
+      },
+    );
+  }, [form, values]);
+
   const addCategory = async (category: string, color: string) => {
     try {
       const response = await mutation.mutateAsync({ category, color });
@@ -32,10 +42,40 @@ const useCategory = () => {
     }
   };
 
+  const handleCloseButton = () => {
+    setModalState(false);
+    setSubmittable(true);
+    setActiveColor(null);
+    form.setFieldValue("category", "");
+    form.setFieldValue("color", "");
+  };
+
+  const handleAddButton = async () => {
+    setSubmittable(false);
+    const { category, color } = form.getFieldsValue();
+    const response = await addCategory(category, color);
+    if (response.success) {
+      handleCloseButton();
+      error && setError("");
+    } else if (!response.success && response.message === "Category exists") {
+      setError(response.message);
+    } else if (
+      !response.success &&
+      response.message === "Internal Server Error"
+    ) {
+      setError(response.message);
+    }
+  };
+
   return {
     addCategory,
-    error: mutation.error,
-    isLoading: mutation.isLoading,
+    error,
+    form,
+    activeColor,
+    setActiveColor,
+    submittable,
+    handleAdd: handleAddButton,
+    handleClose: handleCloseButton,
   };
 };
 
