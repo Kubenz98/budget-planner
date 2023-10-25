@@ -4,8 +4,10 @@ import { Form, Typography } from "antd";
 const { Paragraph, Title } = Typography;
 
 export const FormStyled = styled(Form)`
-  margin: 0 auto;
-  max-width: 400px;
+  &.ant-form.ant-form-vertical {
+    margin: 0 auto;
+    max-width: 400px;
+  }
 `;
 export const ItemStyled = styled(Form.Item)`
   a {
