@@ -1,12 +1,12 @@
 import { ColumnsType } from "antd/es/table";
 import { InputStyled, TableStyled, TagStyled } from "./styled";
-import { data } from "../DUMMY_DATA";
+import { useCategory } from "./hooks/useCategory";
 
 interface DataType {
   key: string;
   assigned: number;
   left: number;
-  tag: string;
+  name: string;
   color: string;
 }
 
@@ -14,8 +14,8 @@ const columns: ColumnsType<DataType> = [
   {
     title: "Tags",
     dataIndex: "tag",
-    render: (_, { tag, color }) => {
-      return <TagStyled color={color}>{tag}</TagStyled>;
+    render: (_, { name, color }) => {
+      return <TagStyled color={color}>{name}</TagStyled>;
     },
   },
   {
@@ -32,5 +32,18 @@ const columns: ColumnsType<DataType> = [
 ];
 
 export default function BudgetTable() {
-  return <TableStyled columns={columns} dataSource={data} rowKey={"id"} />;
+  const { getCategories } = useCategory();
+  let data = [];
+  if (!getCategories.isLoading && getCategories.data) {
+    data = getCategories.data.categories.data.attributes.results;
+  }
+
+  return (
+    <TableStyled
+      loading={getCategories.isLoading}
+      columns={columns}
+      dataSource={data}
+      rowKey={"id"}
+    />
+  );
 }
