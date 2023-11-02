@@ -1,6 +1,6 @@
 import { ColumnsType } from "antd/es/table";
 import { InputStyled, TableStyled, TagStyled } from "./styled";
-import { useCategory } from "./hooks/useCategory";
+import { useGetCategories } from "./hooks/useCategory";
 
 interface DataType {
   key: string;
@@ -32,7 +32,7 @@ const columns: ColumnsType<DataType> = [
 ];
 
 export default function BudgetTable() {
-  const { getCategories } = useCategory();
+  const { getCategories } = useGetCategories();
   let data = [];
   if (!getCategories.isLoading && getCategories.data) {
     data = getCategories.data.categories.data.attributes.results;

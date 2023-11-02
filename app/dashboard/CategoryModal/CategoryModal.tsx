@@ -4,6 +4,7 @@ import ColorPicker from "./ColorPicker/ColorPicker";
 import { ColorItemStyled, ErrorMsgStyled, NameItemStyled } from "./styled";
 import { CategoryModalProps } from "./types";
 import useCategory from "./hooks/useCategory";
+import { useGetCategories } from "../Table/hooks/useCategory";
 
 export default function CategoryModal({
   modalState,
@@ -19,6 +20,12 @@ export default function CategoryModal({
     handleAdd,
   } = useCategory(setModalState);
 
+  const { getCategories } = useGetCategories();
+
+  const addCategory = async () => {
+    await handleAdd();
+    getCategories.refetch();
+  };
   return (
     <Modal
       title="Add a new category"
@@ -31,7 +38,7 @@ export default function CategoryModal({
         <Button
           key="2"
           type="primary"
-          onClick={handleAdd}
+          onClick={addCategory}
           disabled={!submittable}
         >
           Add

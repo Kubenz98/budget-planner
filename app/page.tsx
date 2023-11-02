@@ -1,6 +1,6 @@
 "use client";
 import { Form, Input } from "antd";
-import { redirect, useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 import useSignIn from "@/app/hooks/useSignIn";
 import Link from "next/link";
 import { TitleStyled, FormStyled, PStyled, ItemStyled } from "./styled";
@@ -16,7 +16,6 @@ export default function Page() {
   const { user, userIsLoading } = useUser();
   const { signIn, isLoading, isError } = useSignIn();
   const [form] = Form.useForm();
-  const router = useRouter();
 
   if (user && !userIsLoading) {
     redirect("/dashboard");
@@ -24,8 +23,7 @@ export default function Page() {
 
   const onFinish = async (values: FormValues) => {
     const { email, password } = values;
-    const valid = await signIn(email, password);
-    if (valid) router.push("/dashboard");
+    await signIn(email, password);
   };
 
   return (
