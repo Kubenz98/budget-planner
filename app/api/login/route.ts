@@ -22,6 +22,7 @@ export async function POST(request: Request) {
     const response = {
       success: true,
       name: user.username,
+      wallet: user.wallet,
     };
     return new Response(JSON.stringify(response), {
       status: 200,

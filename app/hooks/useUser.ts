@@ -5,6 +5,7 @@ import { useState } from "react";
 interface User {
   id: number;
   name: string;
+  wallet: number;
 }
 
 const useUser = (): { user: User; userIsLoading: boolean } => {

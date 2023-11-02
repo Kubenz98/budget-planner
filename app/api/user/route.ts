@@ -17,7 +17,7 @@ export async function GET() {
       },
     });
     return NextResponse.json(
-      { name: user.username, id: user.id },
+      { name: user.username, id: user.id, wallet: user.wallet },
       { status: 200 },
     );
   } catch (err: any) {

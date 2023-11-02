@@ -2,17 +2,8 @@ import styled from "@emotion/styled";
 import { Button, Typography } from "antd";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 
-const { Text, Title } = Typography;
+const { Title } = Typography;
 
-export const TextStyled = styled(Text)`
-  &.ant-typography {
-    background-color: ${(props) => props.theme["volcano-5"]};
-    color: white;
-    font-size: 14px;
-    padding: 0.25rem 1rem;
-    border-radius: 1.5rem;
-  }
-`;
 export const TitleStyled = styled(Title)`
   font-size: 20px;
   color: ${(props) => props.theme["colorText"]};

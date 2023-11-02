@@ -8,13 +8,13 @@ import { useState } from "react";
 import { ButtonStyled, TitleStyled } from "./styled";
 import {
   DivStyled,
-  TextStyled,
   DateContainer,
   LeftOutlinedStyled,
   RightOutlinedStyled,
 } from "./styled";
 import CategoryModal from "./CategoryModal/CategoryModal";
 import BudgetTable from "./Table/Table";
+import AssignedButton from "./AssignedButton/AssignedButton";
 
 const monthFormat = "MMMM YYYY";
 
@@ -45,7 +45,7 @@ export default function BudgetPage() {
     <>
       <DivStyled>
         <TitleStyled>Budget</TitleStyled>
-        <TextStyled>1520 to be assigned</TextStyled>
+        <AssignedButton />
       </DivStyled>
       <DateContainer>
         <DatePicker
