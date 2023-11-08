@@ -20,7 +20,7 @@ const monthFormat = "MMMM YYYY";
 
 export default function BudgetPage() {
   const { user, userIsLoading } = useUser();
-  const [month, setMonth] = useState(dayjs());
+  const [date, setDate] = useState(dayjs());
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const showModal = () => {
@@ -28,19 +28,18 @@ export default function BudgetPage() {
   };
 
   const monthChange: DatePickerProps["onChange"] = (date) => {
-    setMonth(date);
+    setDate(date);
   };
 
   const monthHandle = (action: string) => {
     action === "increase"
-      ? setMonth((prevState) => prevState.add(1, "month"))
-      : setMonth((prevState) => prevState.subtract(1, "month"));
+      ? setDate((prevState) => prevState.add(1, "month"))
+      : setDate((prevState) => prevState.subtract(1, "month"));
   };
 
   if (!user && !userIsLoading) {
     redirect("/");
   }
-
   return (
     <>
       <DivStyled>
@@ -49,7 +48,7 @@ export default function BudgetPage() {
       </DivStyled>
       <DateContainer>
         <DatePicker
-          value={month}
+          value={date}
           onChange={monthChange}
           picker="month"
           format={monthFormat}
@@ -59,11 +58,15 @@ export default function BudgetPage() {
           <RightOutlinedStyled onClick={() => monthHandle("increase")} />
         </div>
       </DateContainer>
-      <BudgetTable />
+      <BudgetTable date={date} />
       <ButtonStyled type="dashed" onClick={showModal}>
         + New Category
       </ButtonStyled>
-      <CategoryModal modalState={isModalOpen} setModalState={setIsModalOpen} />
+      <CategoryModal
+        modalState={isModalOpen}
+        setModalState={setIsModalOpen}
+        date={date}
+      />
     </>
   );
 }

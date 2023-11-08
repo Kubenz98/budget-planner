@@ -7,7 +7,7 @@ import { CategoryResponse, CategoryVariables } from "../types";
 const useCategory = (setModalState: Dispatch<SetStateAction<boolean>>) => {
   const mutation = useMutation<CategoryResponse, Error, CategoryVariables>(
     ({ category, color }) =>
-      fetchJson("/api/category", {
+      fetchJson("/api/addCategory", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

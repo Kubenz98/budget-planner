@@ -38,21 +38,3 @@ export async function POST(request: Request) {
     );
   }
 }
-
-export async function GET() {
-  const cookieStore = cookies();
-  const jwt = cookieStore.get("jwt");
-  if (!jwt) {
-    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
-  }
-  const request = await fetchJson(`${CMS_URL}/api/categories`, {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${jwt.value}`,
-      "Content-Type": "application/json",
-    },
-  });
-  try {
-    return NextResponse.json({ categories: request }, { status: 200 });
-  } catch (error: any) {}
-}

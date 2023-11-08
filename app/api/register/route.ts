@@ -30,7 +30,6 @@ export async function POST(request: Request) {
       headers: { "Set-Cookie": serialized },
     });
   } catch (err) {
-    console.log(err);
     return NextResponse.json({ success: false }, { status: 401 });
   }
 }

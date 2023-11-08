@@ -1,6 +1,8 @@
 import { ColumnsType } from "antd/es/table";
 import { InputStyled, TableStyled, TagStyled } from "./styled";
 import { useGetCategories } from "./hooks/useCategory";
+import { Dayjs } from "dayjs";
+import { useEffect, useState } from "react";
 
 interface DataType {
   key: string;
@@ -8,6 +10,10 @@ interface DataType {
   left: number;
   name: string;
   color: string;
+}
+
+interface TableProps {
+  date: Dayjs;
 }
 
 const columns: ColumnsType<DataType> = [
@@ -20,7 +26,7 @@ const columns: ColumnsType<DataType> = [
   },
   {
     title: "Assigned",
-    dataIndex: "assigned",
+    dataIndex: "amount",
     render: (value, record, index) => (
       <InputStyled defaultValue={value} type="number" />
     ),
@@ -31,18 +37,20 @@ const columns: ColumnsType<DataType> = [
   },
 ];
 
-export default function BudgetTable() {
-  const { getCategories } = useGetCategories();
-  let data = [];
-  if (!getCategories.isLoading && getCategories.data) {
-    data = getCategories.data.categories.data.attributes.results;
-  }
+export default function BudgetTable({ date }: TableProps) {
+  const { getMonthlyData, mutation } = useGetCategories();
+
+  useEffect(() => {
+    const firstDayOfMonth = date.startOf("month").format("YYYY-MM-DD");
+    const lastDayOfMonth = date.endOf("month").format("YYYY-MM-DD");
+    getMonthlyData(firstDayOfMonth, lastDayOfMonth);
+  }, [getMonthlyData, date]);
 
   return (
     <TableStyled
-      loading={getCategories.isLoading}
+      loading={mutation.isLoading}
       columns={columns}
-      dataSource={data}
+      dataSource={mutation.data}
       rowKey={"id"}
     />
   );

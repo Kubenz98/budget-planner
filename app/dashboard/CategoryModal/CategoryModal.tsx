@@ -9,6 +9,7 @@ import { useGetCategories } from "../Table/hooks/useCategory";
 export default function CategoryModal({
   modalState,
   setModalState,
+  date,
 }: CategoryModalProps) {
   const {
     error,
@@ -20,11 +21,13 @@ export default function CategoryModal({
     handleAdd,
   } = useCategory(setModalState);
 
-  const { getCategories } = useGetCategories();
+  const { getMonthlyData } = useGetCategories();
 
   const addCategory = async () => {
     await handleAdd();
-    getCategories.refetch();
+    const firstDayOfMonth = date.startOf("month").format("YYYY-MM-DD");
+    const lastDayOfMonth = date.endOf("month").format("YYYY-MM-DD");
+    getMonthlyData(firstDayOfMonth, lastDayOfMonth);
   };
   return (
     <Modal
