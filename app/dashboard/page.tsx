@@ -66,6 +66,7 @@ export default function BudgetPage() {
         modalState={isModalOpen}
         setModalState={setIsModalOpen}
         date={date}
+        setDate={setDate}
       />
     </>
   );

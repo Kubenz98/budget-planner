@@ -2,7 +2,7 @@ import { ColumnsType } from "antd/es/table";
 import { InputStyled, TableStyled, TagStyled } from "./styled";
 import { useGetCategories } from "./hooks/useCategory";
 import { Dayjs } from "dayjs";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 interface DataType {
   key: string;
@@ -27,9 +27,7 @@ const columns: ColumnsType<DataType> = [
   {
     title: "Assigned",
     dataIndex: "amount",
-    render: (value, record, index) => (
-      <InputStyled defaultValue={value} type="number" />
-    ),
+    render: (value) => <InputStyled defaultValue={value} type="number" />,
   },
   {
     title: "Left",

@@ -4,12 +4,13 @@ import ColorPicker from "./ColorPicker/ColorPicker";
 import { ColorItemStyled, ErrorMsgStyled, NameItemStyled } from "./styled";
 import { CategoryModalProps } from "./types";
 import useCategory from "./hooks/useCategory";
-import { useGetCategories } from "../Table/hooks/useCategory";
+import dayjs from "dayjs";
 
 export default function CategoryModal({
   modalState,
   setModalState,
   date,
+  setDate,
 }: CategoryModalProps) {
   const {
     error,
@@ -21,13 +22,9 @@ export default function CategoryModal({
     handleAdd,
   } = useCategory(setModalState);
 
-  const { getMonthlyData } = useGetCategories();
-
   const addCategory = async () => {
     await handleAdd();
-    const firstDayOfMonth = date.startOf("month").format("YYYY-MM-DD");
-    const lastDayOfMonth = date.endOf("month").format("YYYY-MM-DD");
-    getMonthlyData(firstDayOfMonth, lastDayOfMonth);
+    setDate(dayjs(date));
   };
   return (
     <Modal
