@@ -1,42 +1,17 @@
-import { ColumnsType } from "antd/es/table";
 import { InputStyled, TableStyled, TagStyled } from "./styled";
 import { useGetCategories } from "./hooks/useCategory";
 import { Dayjs } from "dayjs";
 import { useEffect } from "react";
-
-interface DataType {
-  key: string;
-  assigned: number;
-  left: number;
-  name: string;
-  color: string;
-}
+import { Form } from "antd";
+import Column from "antd/es/table/Column";
 
 interface TableProps {
   date: Dayjs;
 }
 
-const columns: ColumnsType<DataType> = [
-  {
-    title: "Tags",
-    dataIndex: "tag",
-    render: (_, { name, color }) => {
-      return <TagStyled color={color}>{name}</TagStyled>;
-    },
-  },
-  {
-    title: "Assigned",
-    dataIndex: "amount",
-    render: (value) => <InputStyled defaultValue={value} type="number" />,
-  },
-  {
-    title: "Left",
-    dataIndex: "left",
-  },
-];
-
 export default function BudgetTable({ date }: TableProps) {
   const { getMonthlyData, mutation } = useGetCategories();
+  const [form] = Form.useForm();
 
   useEffect(() => {
     const firstDayOfMonth = date.startOf("month").format("YYYY-MM-DD");
@@ -44,12 +19,48 @@ export default function BudgetTable({ date }: TableProps) {
     getMonthlyData(firstDayOfMonth, lastDayOfMonth);
   }, [getMonthlyData, date]);
 
+  const submitForm = () => {
+    console.log(form.getFieldsValue());
+  };
+
   return (
-    <TableStyled
-      loading={mutation.isLoading}
-      columns={columns}
-      dataSource={mutation.data}
-      rowKey={"id"}
-    />
+    <Form name="budgetForm" form={form}>
+      <Form.List name="categories" initialValue={mutation.data}>
+        {() => {
+          return (
+            <TableStyled
+              loading={mutation.isLoading}
+              dataSource={mutation.data}
+              rowKey="id"
+              pagination={false}
+            >
+              <Column
+                dataIndex="name"
+                title="Category"
+                render={(_, { name, color }, index) => {
+                  return (
+                    <Form.Item name={[index, "category"]}>
+                      <TagStyled color={color}>{name}</TagStyled>
+                    </Form.Item>
+                  );
+                }}
+              />
+              <Column
+                dataIndex="amount"
+                title="Assigned"
+                render={(value, { name, amount, id }, index) => {
+                  return (
+                    <Form.Item name={[name, "amount"]} initialValue={amount}>
+                      <InputStyled type="number" onBlur={submitForm} />
+                    </Form.Item>
+                  );
+                }}
+              />
+              <Column dataIndex="left" title="Left" />
+            </TableStyled>
+          );
+        }}
+      </Form.List>
+    </Form>
   );
 }
