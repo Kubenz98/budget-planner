@@ -4,10 +4,15 @@ import { Dayjs } from "dayjs";
 import { useEffect } from "react";
 import { Form } from "antd";
 import Column from "antd/es/table/Column";
+import styled from "@emotion/styled";
 
 interface TableProps {
   date: Dayjs;
 }
+
+const ColumnStyled = styled(Column)`
+  background-color: red;
+`;
 
 export default function BudgetTable({ date }: TableProps) {
   const { getMonthlyData, mutation } = useGetCategories();
@@ -37,9 +42,9 @@ export default function BudgetTable({ date }: TableProps) {
               <Column
                 dataIndex="name"
                 title="Category"
-                render={(_, { name, color }, index) => {
+                render={(_, { name, color, id }, index) => {
                   return (
-                    <Form.Item name={[index, "category"]}>
+                    <Form.Item name={[index, "id"]} initialValue={id}>
                       <TagStyled color={color}>{name}</TagStyled>
                     </Form.Item>
                   );
@@ -50,7 +55,7 @@ export default function BudgetTable({ date }: TableProps) {
                 title="Assigned"
                 render={(value, { name, amount, id }, index) => {
                   return (
-                    <Form.Item name={[name, "amount"]} initialValue={amount}>
+                    <Form.Item name={[index, "amount"]} initialValue={amount}>
                       <InputStyled type="number" onBlur={submitForm} />
                     </Form.Item>
                   );
