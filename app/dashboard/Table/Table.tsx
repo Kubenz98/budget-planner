@@ -4,15 +4,10 @@ import { Dayjs } from "dayjs";
 import { useEffect } from "react";
 import { Form } from "antd";
 import Column from "antd/es/table/Column";
-import styled from "@emotion/styled";
 
 interface TableProps {
   date: Dayjs;
 }
-
-const ColumnStyled = styled(Column)`
-  background-color: red;
-`;
 
 export default function BudgetTable({ date }: TableProps) {
   const { getMonthlyData, mutation } = useGetCategories();
