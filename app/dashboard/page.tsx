@@ -40,6 +40,7 @@ export default function BudgetPage() {
   if (!user && !userIsLoading) {
     redirect("/");
   }
+
   return (
     <>
       <DivStyled>
@@ -66,7 +67,6 @@ export default function BudgetPage() {
         modalState={isModalOpen}
         setModalState={setIsModalOpen}
         date={date}
-        setDate={setDate}
       />
     </>
   );

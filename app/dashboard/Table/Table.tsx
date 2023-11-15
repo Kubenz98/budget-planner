@@ -1,36 +1,40 @@
 import { InputStyled, TableStyled, TagStyled } from "./styled";
-import { useGetCategories } from "./hooks/useCategory";
 import { Dayjs } from "dayjs";
-import { useEffect } from "react";
 import { Form } from "antd";
 import Column from "antd/es/table/Column";
+import useCategoryQuery from "./hooks/useCategoryQuery";
+import { useEffect } from "react";
 
 interface TableProps {
   date: Dayjs;
 }
 
 export default function BudgetTable({ date }: TableProps) {
-  const { getMonthlyData, mutation } = useGetCategories();
+  const { data, isLoading, query } = useCategoryQuery(
+    date.startOf("month").format("YYYY-MM-DD"),
+    date.endOf("month").format("YYYY-MM-DD"),
+  );
   const [form] = Form.useForm();
-
-  useEffect(() => {
-    const firstDayOfMonth = date.startOf("month").format("YYYY-MM-DD");
-    const lastDayOfMonth = date.endOf("month").format("YYYY-MM-DD");
-    getMonthlyData(firstDayOfMonth, lastDayOfMonth);
-  }, [getMonthlyData, date]);
-
   const submitForm = () => {
     console.log(form.getFieldsValue());
   };
 
+  useEffect(() => {
+    (async () => {
+      const response = await query.refetch();
+      form.setFieldsValue({ categories: response.data });
+    })();
+    // eslint-disable-next-line
+  }, [date, query.refetch, form.setFieldsValue]);
+
   return (
     <Form name="budgetForm" form={form}>
-      <Form.List name="categories" initialValue={mutation.data}>
+      <Form.List name="categories" initialValue={data}>
         {() => {
           return (
             <TableStyled
-              loading={mutation.isLoading}
-              dataSource={mutation.data}
+              loading={isLoading}
+              dataSource={data}
               rowKey="id"
               pagination={false}
             >
