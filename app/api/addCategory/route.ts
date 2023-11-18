@@ -5,7 +5,7 @@ import { cookies } from "next/headers";
 const { CMS_URL } = process.env;
 
 export async function POST(request: Request) {
-  const { category, color } = await request.json();
+  const { category, color, id } = await request.json();
   const cookieStore = cookies();
   const jwt = cookieStore.get("jwt");
   if (!jwt) {
@@ -18,7 +18,7 @@ export async function POST(request: Request) {
         Authorization: `Bearer ${jwt.value}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ category, color }),
+      body: JSON.stringify({ category, color, id }),
     });
     if (request.data.attributes.error === "ValidationError") {
       return NextResponse.json(

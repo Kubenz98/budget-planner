@@ -1,7 +1,12 @@
 import { Button, Form, Input, Modal, Select } from "antd";
 import { colors } from "./options";
 import ColorPicker from "./ColorPicker/ColorPicker";
-import { ColorItemStyled, ErrorMsgStyled, NameItemStyled } from "./styled";
+import {
+  ColorItemStyled,
+  ErrorMsgStyled,
+  IdItem,
+  NameItemStyled,
+} from "./styled";
 import { CategoryModalProps } from "./types";
 import useCategory from "./hooks/useCategory";
 import useCategoryQuery from "../Table/hooks/useCategoryQuery";
@@ -38,6 +43,7 @@ export default function CategoryModal({
         if (color.value === modalState.color) {
           form.setFieldValue("color", modalState.color);
           form.setFieldValue("category", modalState.name);
+          form.setFieldValue("id", modalState.id);
           setActiveColor(color.id);
         }
       });
@@ -91,6 +97,9 @@ export default function CategoryModal({
         >
           <Select options={colors} />
         </ColorItemStyled>
+        <IdItem name="id">
+          <Input type="hidden" />
+        </IdItem>
         <ColorPicker
           form={form}
           activeColor={activeColor}

@@ -14,13 +14,13 @@ const useCategory = (
   >,
 ) => {
   const mutation = useMutation<CategoryResponse, Error, CategoryVariables>(
-    ({ category, color }) =>
+    ({ category, color, id }) =>
       fetchJson("/api/addCategory", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ category, color }),
+        body: JSON.stringify({ category, color, id }),
       }),
   );
 
@@ -41,9 +41,9 @@ const useCategory = (
     );
   }, [form, values]);
 
-  const addCategory = async (category: string, color: string) => {
+  const addCategory = async (category: string, color: string, id: number) => {
     try {
-      const response = await mutation.mutateAsync({ category, color });
+      const response = await mutation.mutateAsync({ category, color, id });
       return response;
     } catch (err) {
       return JSON.parse(err.responseText);
@@ -56,12 +56,14 @@ const useCategory = (
     setActiveColor(null);
     form.setFieldValue("category", "");
     form.setFieldValue("color", "");
+    form.setFieldValue("id", "");
   };
 
   const handleAddButton = async () => {
     setSubmittable(false);
-    const { category, color } = form.getFieldsValue();
-    const response = await addCategory(category, color);
+    const { category, color, id } = form.getFieldsValue();
+    const response = await addCategory(category, color, id);
+
     if (response.success) {
       handleCloseButton();
       error && setError("");

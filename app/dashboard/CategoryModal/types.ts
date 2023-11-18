@@ -16,6 +16,7 @@ export interface CategoryModalProps {
 export interface CategoryVariables {
   category: string;
   color: string;
+  id: number;
 }
 
 export interface CategoryResponse {

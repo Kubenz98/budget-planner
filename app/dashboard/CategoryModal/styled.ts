@@ -15,6 +15,9 @@ export const ColorItemStyled = styled(Form.Item)`
     display: none;
   }
 `;
+export const IdItem = styled(Form.Item)`
+  display: none;
+`;
 
 export const ErrorMsgStyled = styled.p`
   text-align: center;
