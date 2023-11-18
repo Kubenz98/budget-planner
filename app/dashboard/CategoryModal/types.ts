@@ -2,8 +2,14 @@ import { Dayjs } from "dayjs";
 import { Dispatch, SetStateAction } from "react";
 
 export interface CategoryModalProps {
-  modalState: boolean;
-  setModalState: Dispatch<SetStateAction<boolean>>;
+  modalState: { isOpen: boolean; id?: number; color?: string; name?: string };
+  setModalState: Dispatch<
+    SetStateAction<{
+      isOpen: boolean;
+      id?: number;
+      color?: string;
+    }>
+  >;
   date: Dayjs;
 }
 

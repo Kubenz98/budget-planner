@@ -21,11 +21,9 @@ const monthFormat = "MMMM YYYY";
 export default function BudgetPage() {
   const { user, userIsLoading } = useUser();
   const [date, setDate] = useState(dayjs());
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
+  const [modalState, setModalState] = useState({
+    isOpen: false,
+  });
 
   const monthChange: DatePickerProps["onChange"] = (date) => {
     setDate(date);
@@ -59,13 +57,16 @@ export default function BudgetPage() {
           <RightOutlinedStyled onClick={() => monthHandle("increase")} />
         </div>
       </DateContainer>
-      <BudgetTable date={date} />
-      <ButtonStyled type="dashed" onClick={showModal}>
+      <BudgetTable date={date} setModalState={setModalState} />
+      <ButtonStyled
+        type="dashed"
+        onClick={() => setModalState({ isOpen: true })}
+      >
         + New Category
       </ButtonStyled>
       <CategoryModal
-        modalState={isModalOpen}
-        setModalState={setIsModalOpen}
+        modalState={modalState}
+        setModalState={setModalState}
         date={date}
       />
     </>

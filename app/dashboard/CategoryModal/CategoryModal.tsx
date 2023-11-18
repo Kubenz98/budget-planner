@@ -5,6 +5,7 @@ import { ColorItemStyled, ErrorMsgStyled, NameItemStyled } from "./styled";
 import { CategoryModalProps } from "./types";
 import useCategory from "./hooks/useCategory";
 import useCategoryQuery from "../Table/hooks/useCategoryQuery";
+import { useEffect } from "react";
 
 export default function CategoryModal({
   modalState,
@@ -31,10 +32,24 @@ export default function CategoryModal({
     query.refetch();
   };
 
+  useEffect(() => {
+    if (!activeColor) {
+      colors.forEach((color) => {
+        if (color.value === modalState.color) {
+          form.setFieldValue("color", modalState.color);
+          form.setFieldValue("category", modalState.name);
+          setActiveColor(color.id);
+        }
+      });
+    }
+  }, [activeColor, form, modalState, setActiveColor]);
+
+  const title = modalState.name ? "Edit category" : "Add a new category";
+
   return (
     <Modal
-      title="Add a new category"
-      open={modalState}
+      title={title}
+      open={modalState.isOpen}
       onCancel={handleClose}
       footer={[
         <Button key="1" onClick={handleClose}>
@@ -54,6 +69,7 @@ export default function CategoryModal({
         <NameItemStyled
           label="Name"
           name="category"
+          initialValue={modalState.name}
           rules={[
             {
               required: true,

@@ -4,7 +4,15 @@ import { Form } from "antd";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { CategoryResponse, CategoryVariables } from "../types";
 
-const useCategory = (setModalState: Dispatch<SetStateAction<boolean>>) => {
+const useCategory = (
+  setModalState: Dispatch<
+    SetStateAction<{
+      isOpen: boolean;
+      id?: number;
+      color?: string;
+    }>
+  >,
+) => {
   const mutation = useMutation<CategoryResponse, Error, CategoryVariables>(
     ({ category, color }) =>
       fetchJson("/api/addCategory", {
@@ -43,7 +51,7 @@ const useCategory = (setModalState: Dispatch<SetStateAction<boolean>>) => {
   };
 
   const handleCloseButton = () => {
-    setModalState(false);
+    setModalState({ isOpen: false });
     setSubmittable(true);
     setActiveColor(null);
     form.setFieldValue("category", "");

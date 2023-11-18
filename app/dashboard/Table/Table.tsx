@@ -7,9 +7,20 @@ import { useEffect } from "react";
 
 interface TableProps {
   date: Dayjs;
+  setModalState: ({
+    isOpen,
+    id,
+    color,
+    name,
+  }: {
+    isOpen: boolean;
+    id: number;
+    color: string;
+    name: string;
+  }) => void;
 }
 
-export default function BudgetTable({ date }: TableProps) {
+export default function BudgetTable({ date, setModalState }: TableProps) {
   const { data, isLoading, query } = useCategoryQuery(
     date.startOf("month").format("YYYY-MM-DD"),
     date.endOf("month").format("YYYY-MM-DD"),
@@ -26,6 +37,10 @@ export default function BudgetTable({ date }: TableProps) {
     })();
     // eslint-disable-next-line
   }, [date, query.refetch, form.setFieldsValue]);
+
+  const changeCategoryName = (id: number, color: string, name: string) => {
+    setModalState({ isOpen: true, id, color, name });
+  };
 
   return (
     <Form name="budgetForm" form={form}>
@@ -44,7 +59,12 @@ export default function BudgetTable({ date }: TableProps) {
                 render={(_, { name, color, id }, index) => {
                   return (
                     <Form.Item name={[index, "id"]} initialValue={id}>
-                      <TagStyled color={color}>{name}</TagStyled>
+                      <TagStyled
+                        color={color}
+                        onClick={() => changeCategoryName(id, color, name)}
+                      >
+                        {name}
+                      </TagStyled>
                     </Form.Item>
                   );
                 }}
