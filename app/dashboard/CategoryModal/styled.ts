@@ -2,7 +2,9 @@ import styled from "@emotion/styled";
 import { Form } from "antd";
 
 export const NameItemStyled = styled(Form.Item)`
-  margin-top: 2rem;
+  &.ant-form-item {
+    margin-top: 2rem;
+  }
 `;
 export const ColorItemStyled = styled(Form.Item)`
   margin-bottom: 0;
