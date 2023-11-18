@@ -54,6 +54,7 @@ const useCategory = (
     setModalState({ isOpen: false });
     setSubmittable(true);
     setActiveColor(null);
+    setError("");
     form.setFieldValue("category", "");
     form.setFieldValue("color", "");
     form.setFieldValue("id", "");
